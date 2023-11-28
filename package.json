@@ -1,6 +1,6 @@
 {
   "name": "ganxing",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A comprehensive collection of personal programming utilities and components by Gan-Xing.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
