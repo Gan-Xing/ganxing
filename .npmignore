@@ -13,6 +13,7 @@ prettier.config.js
 
 # Development scripts (if any)
 scripts/
+.github
 
 # Development dependencies
 node_modules/
