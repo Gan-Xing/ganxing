@@ -1,0 +1,31 @@
+# Operating system specific
+.DS_Store        # Mac system file
+Thumbs.db        # Windows image file cache
+
+# Editor/IDE specific
+.idea/           # JetBrains IDE
+*.swp            # Vim temporary files
+.vscode/
+
+# Logs and databases
+*.log
+*.sqlite
+
+# Dependency directories (commented out as you already have node_modules)
+node_modules/
+
+# Build directory (commented out as you already have dist)
+dist/
+
+# dotenv environment variables file
+.env
+
+# Temporary files
+*.tmp
+*.temp
+
+# Coverage directory generated from Jest or other testing libraries
+coverage/
+node_modules
+
+pnpm-lock.yaml

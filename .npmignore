@@ -1,0 +1,32 @@
+# Source files (if you decide to exclude them)
+src/
+
+# Test files
+**/*.test.ts
+
+# Configuration files
+tsconfig.json
+vite.config.js
+jest.config.js
+prettier.config.js
+.eslintrc.json
+
+# Development scripts (if any)
+scripts/
+
+# Development dependencies
+node_modules/
+
+# Coverage reports
+coverage/
+
+# Documentation source (if you decide to exclude them)
+docs/
+
+# Any other files or directories you don't want to include in the npm package
+*.log
+*.bak
+*.swp
+.DS_Store
+.idea
+.vscode

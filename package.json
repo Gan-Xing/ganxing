@@ -1,0 +1,70 @@
+{
+  "name": "ganxing",
+  "version": "0.0.0",
+  "description": "A comprehensive collection of personal programming utilities and components by Gan-Xing.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "commit": "git-cz",
+    "test": "jest --coverage",
+    "lint": "eslint 'src/**/*.{ts,tsx}'",
+    "format": "prettier --write 'src/**/*.{ts,tsx}'",
+    "check-format": "prettier --check 'src/**/*.{ts,tsx}'",
+    "clean": "rimraf dist",
+    "docs": "typedoc",
+    "prebuild": "pnpm run lint && pnpm run check-format && pnpm run test && pnpm run clean && pnpm run docs",
+    "build": "pnpm run prebuild && vite build"
+  },
+  "keywords": [
+    "ganxing",
+    "typescript"
+  ],
+  "author": {
+    "name": "Gan-Xing",
+    "email": "599153574@qq.com",
+    "url": "http://web.ganxing.fun"
+  },
+  "license": "MIT",
+  "repository": {
+  "type": "git",
+  "url": "https://github.com/Gan-Xing/ganxing.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Gan-Xing/ganxing/issues"
+  },
+  "homepage": "https://github.com/Gan-Xing/ganxing#readme",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^18.2.0",
+    "@commitlint/config-conventional": "^18.1.0",
+    "@types/jest": "^29.5.7",
+    "@typescript-eslint/eslint-plugin": "^6.9.1",
+    "@typescript-eslint/parser": "^6.9.1",
+    "commitizen": "^4.3.0",
+    "cz-conventional-changelog": "^3.3.0",
+    "eslint": "^8.52.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.1",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "prettier": "^3.0.3",
+    "rimraf": "^5.0.5",
+    "ts-jest": "^29.1.1",
+    "typedoc": "^0.25.3",
+    "typescript": "^5.2.2",
+    "vite": "^4.5.0"
+  }
+}

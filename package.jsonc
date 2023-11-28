@@ -1,0 +1,70 @@
+{
+  "name": "ganxing", // 项目名称
+  "version": "0.0.0", // 项目版本号
+  "description": "A comprehensive collection of personal programming utilities and components by Gan-Xing.", // 项目简介
+  "main": "dist/index.js", // 项目的主入口文件
+  "types": "dist/index.d.ts", // TypeScript 类型声明的入口文件
+  "scripts": {
+    "commit": "git-cz", // 使用 git-cz 来格式化提交信息
+    "test": "jest --coverage", // 运行 Jest 测试并生成覆盖率报告
+    "lint": "eslint 'src/**/*.{ts,tsx}'", // 运行 ESLint 检查代码质量
+    "format": "prettier --write 'src/**/*.{ts,tsx}'", // 运行 Prettier 格式化代码
+    "check-format": "prettier --check 'src/**/*.{ts,tsx}'", // 检查代码是否已经被 Prettier 格式化
+    "clean": "rimraf dist", // 删除 dist 目录来清理旧的构建输出
+    "docs": "typedoc", // 运行 TypeDoc 生成项目文档
+    "prebuild": "pnpm run lint && pnpm run check-format && pnpm run test && pnpm run clean && pnpm run docs", // 在构建之前执行一系列的准备任务
+    "build": "pnpm run prebuild && vite build" // 执行 prebuild 脚本，然后运行 Vite 构建项目
+  },
+  "keywords": [    
+    "ganxing",
+    "typescript"
+  ], // 项目关键字
+  "author": {
+    "name": "Gan-Xing", // 作者名称
+    "email": "599153574@qq.com", // 作者邮箱
+    "url": "http://web.ganxing.fun" // 作者网址
+  },
+  "license": "MIT", // 项目许可证
+  "repository": {
+    "type": "git", // 版本控制系统类型
+    "url": "https://github.com/Gan-Xing/ganxing.git" // 项目仓库地址
+  },
+  "bugs": {
+    "url": "https://github.com/Gan-Xing/ganxing/issues" // 项目问题追踪地址
+  },
+  "homepage": "https://github.com/Gan-Xing/ganxing#readme", // 项目主页地址
+  "engines": {
+    "node": ">=18.0.0", // 支持的 Node.js 版本
+    "npm": ">=8.0.0" // 支持的 npm 版本
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog" // Commitizen 配置路径
+    }
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS" // Husky 钩子，在 commit 消息被提交时运行 commitlint
+    }
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^18.2.0", // commitlint 命令行工具
+    "@commitlint/config-conventional": "^18.1.0", // commitlint 常规配置
+    "@types/jest": "^29.5.7", // Jest 类型声明
+    "@typescript-eslint/eslint-plugin": "^6.9.1", // TypeScript ESLint 插件
+    "@typescript-eslint/parser": "^6.9.1", // TypeScript ESLint 解析器
+    "commitizen": "^4.3.0", // Commitizen 工具
+    "cz-conventional-changelog": "^3.3.0", // cz-conventional-changelog 插件
+    "eslint": "^8.52.0", // ESLint 工具
+    "eslint-config-prettier": "^9.0.0", // Prettier ESLint 配置
+    "eslint-plugin-prettier": "^5.0.1", // Prettier ESLint 插件
+    "jest": "^29.7.0", // Jest 测试框架
+    "jest-environment-jsdom": "^29.7.0", // Jest jsdom 环境
+    "prettier": "^3.0.3", // Prettier 格式化工具
+    "rimraf": "^5.0.5", // rimraf 删除工具
+    "ts-jest": "^29.1.1", // TypeScript Jest 插件
+    "typedoc": "^0.25.3", // TypeDoc 文档生成工具
+    "typescript": "^5.2.2", // TypeScript 编译器
+    "vite": "^4.5.0" // Vite 构建工具
+  }
+}
