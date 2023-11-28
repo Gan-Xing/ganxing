@@ -2,8 +2,9 @@
   "name": "ganxing",
   "version": "0.0.2",
   "description": "A comprehensive collection of personal programming utilities and components by Gan-Xing.",
-  "main": "dist/index.js",
+  "main": "dist/index.mjs",
   "types": "dist/index.d.ts",
+  "browser": "dist/index.umd.js",
   "scripts": {
     "commit": "git-cz",
     "test": "jest --coverage",
