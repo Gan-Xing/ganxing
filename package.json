@@ -21,13 +21,13 @@
   ],
   "author": {
     "name": "Gan-Xing",
-    "email": "599153574@qq.com",
+    "email": "gx19942015@hotmail.com",
     "url": "http://web.ganxing.fun"
   },
   "license": "MIT",
   "repository": {
-  "type": "git",
-  "url": "https://github.com/Gan-Xing/ganxing.git"
+    "type": "git",
+    "url": "https://github.com/Gan-Xing/ganxing.git"
   },
   "bugs": {
     "url": "https://github.com/Gan-Xing/ganxing/issues"
