@@ -1,6 +1,13 @@
-// src/components/GXVideo/GXVideo.ts
+/**
+ * 自定义HTML元素，用于创建并控制视频播放。
+ * @template T 指定视频元素属性的类型。
+ */
 export class GXVideo extends HTMLElement {
   private videoElement: HTMLVideoElement;
+
+  /**
+   * 构造函数，创建 GXVideo 实例并初始化 shadow DOM 和 video 元素。
+   */
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
@@ -10,12 +17,18 @@ export class GXVideo extends HTMLElement {
     ) as HTMLVideoElement;
   }
 
+  /**
+   * 组件连接到 DOM 时调用，用于设置视频属性和加载视频。
+   */
   connectedCallback() {
     this.updateVideoAttributes();
     this.loadVideo(this.getAttribute("src"), this.getAttribute("type"));
     this.forwardEvents(); // 在连接时设置事件转发
   }
 
+  /**
+   * 定义需要观察的属性名称数组。
+   */
   static get observedAttributes() {
     return [
       "src",
@@ -32,6 +45,12 @@ export class GXVideo extends HTMLElement {
     ];
   }
 
+  /**
+   * 当观察的属性变化时调用。
+   * @param {string} name 属性名称。
+   * @param {string} oldValue 旧属性值。
+   * @param {string} newValue 新属性值。
+   */
   attributeChangedCallback(name: string, oldValue: string, newValue: string) {
     if (name === "class") {
       this.videoElement.className = newValue;
@@ -42,6 +61,9 @@ export class GXVideo extends HTMLElement {
     }
   }
 
+  /**
+   * 更新 video 元素的属性以匹配自定义元素的属性。
+   */
   updateVideoAttributes() {
     Array.from(this.attributes).forEach((attr) => {
       if (attr.name !== "src" && attr.name !== "type") {
@@ -54,6 +76,12 @@ export class GXVideo extends HTMLElement {
       }
     });
   }
+
+  /**
+   * 根据提供的 URL 和类型加载视频。
+   * @param {string | null} url 视频的 URL。
+   * @param {string | null} type 视频的 MIME 类型。
+   */
 
   async loadVideo(url: string | null, type: string | null) {
     if (!url) return;
@@ -91,47 +119,76 @@ export class GXVideo extends HTMLElement {
     }
   }
 
-  // 对外暴露 video 元素的属性
+  /**
+   * 获取当前播放时间。
+   */
   get currentTime() {
     return this.videoElement.currentTime;
   }
+
+  /**
+   * 设置当前播放时间。
+   * @param {number} value 要设置的播放时间。
+   */
   set currentTime(value) {
     this.videoElement.currentTime = value;
   }
 
+  /**
+   * 获取视频总时长。
+   */
   get duration() {
     return this.videoElement.duration;
   }
 
+  /**
+   * 获取视频是否已结束。
+   */
   get ended() {
     return this.videoElement.ended;
   }
 
+  /**
+   * 获取视频是否暂停。
+   */
   get paused() {
     return this.videoElement.paused;
   }
 
+  /**
+   * 加载视频源。
+   */
   load() {
     this.videoElement.load();
   }
 
+  /**
+   * 播放视频。
+   */
   play() {
-    return this.videoElement.play(); // 返回 Promise 对象
+    return this.videoElement.play();
   }
 
+  /**
+   * 暂停视频。
+   */
   pause() {
     this.videoElement.pause();
   }
 
+  /**
+   * 添加文字轨道。
+   * @param {TextTrackKind} kind 文字轨道的类型。
+   * @param {string} [label] 文字轨道的标签。
+   * @param {string} [language] 文字轨道的语言。
+   */
   addTextTrack(kind: TextTrackKind, label?: string, language?: string) {
-    return this.videoElement.addTextTrack(
-      kind as TextTrackKind,
-      label,
-      language,
-    );
+    return this.videoElement.addTextTrack(kind, label, language);
   }
 
-  // 转发 video 元素的事件
+  /**
+   * 转发 video 元素的事件。
+   */
   private forwardEvents() {
     const events = [
       "play",
@@ -148,6 +205,9 @@ export class GXVideo extends HTMLElement {
     });
   }
 }
+/**
+ * 注册自定义元素。
+ */
 if (!customElements.get("gx-video")) {
   customElements.define("gx-video", GXVideo);
 }

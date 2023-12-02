@@ -12,7 +12,7 @@
     "format": "prettier --write 'src/**/*.{ts,tsx}'",
     "check-format": "prettier --check 'src/**/*.{ts,tsx}'",
     "clean": "rimraf dist",
-    "docs": "typedoc",
+    "docs": "typedoc --out docs src",
     "prebuild": "pnpm run lint && pnpm run check-format && pnpm run test && pnpm run clean && pnpm run docs",
     "build": "pnpm run prebuild && vite build"
   },
