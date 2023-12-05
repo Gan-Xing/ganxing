@@ -226,6 +226,36 @@ class GXCrypto {
   }
 
   /**
+   * 生成加密密钥。
+   *
+   * @param {number} [keySize=32] - 密钥的大小（单位：字节），默认为 32 字节（256 位）。
+   * @param {string} [algorithm="AES-GCM"] - 加密算法，默认为 "AES-GCM"。
+   * @returns {Promise<CryptoKey | undefined>} - 返回一个 Promise，解析为生成的 CryptoKey，如果不在 Web 环境中则返回 undefined。
+   */
+  async generateCryptoKey(keySize = 32, algorithm = "AES-GCM") {
+    if (this.webCrypto) {
+      const keyBuffer = this.randomFillSync(new Uint8Array(keySize));
+      return await this.webCrypto.subtle.importKey(
+        "raw",
+        keyBuffer,
+        { name: algorithm, length: keySize * 8 },
+        false,
+        ["encrypt", "decrypt"],
+      );
+    }
+  }
+
+  /**
+   * 生成初始化向量（IV）。
+   *
+   * @param {number} [ivSize=12] - 初始化向量的大小（单位：字节），默认为 12 字节。
+   * @returns {Uint8Array} - 返回填充了随机字节的 Uint8Array，用作初始化向量。
+   */
+  generateIV(ivSize = 12) {
+    return this.randomFillSync(new Uint8Array(ivSize));
+  }
+
+  /**
    * 根据环境使用适当的方法加密数据。
    * 在 Node.js 环境中，使用 `nodeEncrypt` 方法。在 Web 环境中，使用 `webEncrypt` 方法。
    *
@@ -542,6 +572,8 @@ const {
   arrayBufferToHex,
   base64ToArrayBuffer,
   arrayBufferToBase64,
+  generateCryptoKey,
+  generateIV,
 } = gxCrypto;
 
 // 导出这些方法
@@ -554,5 +586,7 @@ export {
   arrayBufferToHex,
   base64ToArrayBuffer,
   arrayBufferToBase64,
+  generateCryptoKey,
+  generateIV,
   GXCrypto as Crypto,
 };
