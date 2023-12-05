@@ -529,8 +529,8 @@ class GXCrypto {
   }
 }
 
-// 创建 GXCrypto 类的实例
-const gxInstance = new GXCrypto();
+// 创建 gxCrypto 类的实例
+const gxCrypto = new GXCrypto();
 
 // 使用解构赋值将方法赋给新的变量
 const {
@@ -542,7 +542,7 @@ const {
   arrayBufferToHex,
   base64ToArrayBuffer,
   arrayBufferToBase64,
-} = gxInstance;
+} = gxCrypto;
 
 // 导出这些方法
 export {

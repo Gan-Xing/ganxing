@@ -131,3 +131,55 @@ export class GXStorage<T> {
     this.getRemainingSpace(warn);
   }
 }
+
+// 创建 gxStorage 类的实例
+const LocalStorage = new GXStorage(window.localStorage);
+const SessionStorage = new GXStorage(window.sessionStorage);
+
+// 使用解构赋值将方法赋给新的变量
+// 对于LocalStorage的操作，重命名方法
+const {
+  setItem: setLocal,
+  removeItem: removeLocal,
+  getItem: getLocal,
+  clear: clearLocal,
+  setItems: setLocals,
+  removeItems: removeLocals,
+  getRemainingSpace: getRemainingLocalSpace,
+  checkSpace: checkLocalSpace,
+} = LocalStorage;
+
+// 对于SessionStorage的操作，重命名方法
+const {
+  setItem: setSession,
+  removeItem: removeSession,
+  getItem: getSession,
+  clear: clearSession,
+  setItems: setSessions,
+  removeItems: removeSessions,
+  getRemainingSpace: getRemainingSessionSpace,
+  checkSpace: checkSessionSpace,
+} = SessionStorage;
+
+// 导出这些方法
+export {
+  setLocal,
+  removeLocal,
+  getLocal,
+  clearLocal,
+  setLocals,
+  removeLocals,
+  getRemainingLocalSpace,
+  checkLocalSpace,
+  setSession,
+  removeSession,
+  getSession,
+  clearSession,
+  setSessions,
+  removeSessions,
+  getRemainingSessionSpace,
+  checkSessionSpace,
+  LocalStorage,
+  SessionStorage,
+  GXStorage as Storage,
+};
