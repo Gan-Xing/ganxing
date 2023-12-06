@@ -26,30 +26,31 @@ export class GXStorage<T> {
   constructor(private storage: Storage) {}
 
   /**
-   * 在存储中设置一个项。
+   * 设置单个项。
    * @param {string} key 用来存储项的键。
    * @param {T} value 要存储的值。
-   * @param {number | null} expiresInOrExactTime 项过期的毫秒数，或者是具体的过期时间戳。如果不过期，则传入 null。
-   * @param {boolean} isExactTime 如果 expiresInOrExactTime 是一个具体的时间戳，则设置为 true。
+   * @param {number | null} expiration 过期时间。如果为 null，则表示永不过期。如果为数字，则根据 isExactTime 参数决定是相对时间还是确切时间戳。
+   * @param {boolean} isExactTime 如果为 true，则 expiration 被视为具体的过期时间戳（毫秒）；否则，视为从现在开始的毫秒数。
    * @param {boolean} warn 当接近存储限制时，如果设置为 true，则启用警告。
    */
   setItem(
     key: string,
     value: T,
-    expiresInOrExactTime: number | null = null,
+    expiration: number | null = null,
     isExactTime: boolean = false,
     warn: boolean = false,
   ): void {
-    let expiresAt = expiresInOrExactTime;
-    if (expiresInOrExactTime !== null && !isExactTime) {
-      expiresAt = Date.now() + expiresInOrExactTime;
+    if (expiration === null) {
+      // 如果没有过期时间，直接存储值
+      this.storage.setItem(key, JSON.stringify(value));
+    } else {
+      // 如果有过期时间，存储带有过期时间的对象
+      const expiresAt: number | null = isExactTime
+        ? expiration
+        : Date.now() + expiration;
+      const item: StorageItem<T> = { value, expiresAt };
+      this.storage.setItem(key, JSON.stringify(item));
     }
-
-    const item: StorageItem<T> = {
-      value,
-      expiresAt,
-    };
-    this.storage.setItem(key, JSON.stringify(item));
     this.checkSpace(warn);
   }
 
@@ -63,13 +64,24 @@ export class GXStorage<T> {
     const itemStr = this.storage.getItem(key);
     if (!itemStr) return null;
 
-    const item: StorageItem<T> = JSON.parse(itemStr);
-    if (item.expiresAt && Date.now() > item.expiresAt) {
-      this.storage.removeItem(key);
-      if (callback) callback();
+    try {
+      const item = JSON.parse(itemStr);
+      if (typeof item === "object" && item !== null && "expiresAt" in item) {
+        // 处理带有过期时间的对象
+        if (item.expiresAt && Date.now() > item.expiresAt) {
+          this.storage.removeItem(key);
+          if (callback) callback();
+          return null;
+        }
+        return item.value;
+      } else {
+        // 处理直接存储的值
+        return item;
+      }
+    } catch (e) {
+      console.error("Error parsing storage item:", e);
       return null;
     }
-    return item.value;
   }
 
   /**
@@ -89,14 +101,46 @@ export class GXStorage<T> {
 
   /**
    * 在存储中设置多个项。
-   * @param {Array<{ key: string; value: T; expiresAt?: number | null }>} items 要在存储中设置的项的数组。
+   * @param {Array<{ key: string; value: T; expiration?: number | null; isExactTime?: boolean; warn?: boolean }>} items 要在存储中设置的项的数组。
+   *
+   * @remarks
+   * 每个项可以包含以下属性：
+   * - `key`: 存储项的键。
+   * - `value`: 要存储的值。
+   * - `expiration`: 过期时间。如果为 `null`，则表示永不过期。如果为数字，根据 `isExactTime` 参数决定是相对时间还是确切时间戳。
+   * - `isExactTime`: 如果为 `true`，则 `expiration` 被视为具体的过期时间戳（毫秒）；否则，视为从现在开始的毫秒数。
+   * - `warn`: 当接近存储限制时，如果设置为 `true`，则启用警告。
    */
   setItems(
-    items: Array<{ key: string; value: T; expiresAt?: number | null }>,
+    items: Array<{
+      key: string;
+      value: T;
+      expiration?: number | null;
+      isExactTime?: boolean;
+      warn?: boolean;
+    }>,
   ): void {
-    items.forEach((item) => {
-      this.setItem(item.key, item.value, item.expiresAt);
-    });
+    items.forEach(
+      ({
+        key,
+        value,
+        expiration = null,
+        isExactTime = false,
+        warn = false,
+      }) => {
+        this.setItem(key, value, expiration, isExactTime, warn);
+      },
+    );
+  }
+
+  /**
+   * 从存储中检索多个项。
+   * @param {string[]} keys 要检索的项的键数组。
+   * @param {() => void} [callback] 如果某个项已过期，则执行的可选回调函数。
+   * @return {(T | null)[]} 检索到的项的值的数组。对于每个键，如果项不存在或已过期，则为 null。
+   */
+  getItems(keys: string[], callback?: () => void): (T | null)[] {
+    return keys.map((key) => this.getItem(key, callback));
   }
 
   /**
@@ -144,6 +188,7 @@ const {
   getItem: getLocal,
   clear: clearLocal,
   setItems: setLocals,
+  getItems: getLocals,
   removeItems: removeLocals,
   getRemainingSpace: getRemainingLocalSpace,
   checkSpace: checkLocalSpace,
@@ -156,6 +201,7 @@ const {
   getItem: getSession,
   clear: clearSession,
   setItems: setSessions,
+  getItems: getSessions,
   removeItems: removeSessions,
   getRemainingSpace: getRemainingSessionSpace,
   checkSpace: checkSessionSpace,
@@ -166,6 +212,7 @@ export {
   setLocal,
   removeLocal,
   getLocal,
+  getLocals,
   clearLocal,
   setLocals,
   removeLocals,
@@ -174,6 +221,7 @@ export {
   setSession,
   removeSession,
   getSession,
+  getSessions,
   clearSession,
   setSessions,
   removeSessions,
