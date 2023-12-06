@@ -311,7 +311,7 @@ class GXCrypto {
     data: string,
     key: CipherKey | CryptoKey,
     iv: BinaryLike | Uint8Array,
-    algorithm: SymmetricEncryptionAlgorithm,
+    algorithm: SymmetricEncryptionAlgorithm = SymmetricEncryptionAlgorithm.AES_GCM,
   ): Promise<string> {
     if (this.isNode && this.nodeCrypto) {
       // 在 Node.js 环境中使用 nodeDecrypt 方法进行解密
