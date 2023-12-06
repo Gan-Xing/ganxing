@@ -148,10 +148,10 @@ class GXCrypto {
    * @private
    */
   async nodeDecrypt(
-    algorithm: string,
+    data: string,
     key: CipherKey,
     iv: BinaryLike,
-    data: string,
+    algorithm: string,
   ): Promise<string> {
     if (this.isNode && this.nodeCrypto) {
       const decipher = this.nodeCrypto.createDecipheriv(algorithm, key, iv);
@@ -203,10 +203,10 @@ class GXCrypto {
    * @private
    */
   async webDecrypt(
-    algorithm: string,
+    data: string,
     key: CryptoKey,
     iv: Uint8Array,
-    data: string,
+    algorithm: string,
   ): Promise<string> {
     if (this.webCrypto) {
       const matches = data.match(/.{1,2}/g);
@@ -305,26 +305,26 @@ class GXCrypto {
    * @throws 如果环境中没有可用的加密模块，则会抛出错误。
    */
   async decrypt(
-    algorithm: SymmetricEncryptionAlgorithm,
+    data: string,
     key: CipherKey | CryptoKey,
     iv: BinaryLike | Uint8Array,
-    data: string,
+    algorithm: SymmetricEncryptionAlgorithm,
   ): Promise<string> {
     if (this.isNode && this.nodeCrypto) {
       // 在 Node.js 环境中使用 nodeDecrypt 方法进行解密
       return this.nodeDecrypt(
-        algorithm,
+        data,
         key as CipherKey,
         iv as BinaryLike,
-        data,
+        algorithm,
       );
     } else if (this.webCrypto) {
       // 在 Web 环境中使用 webDecrypt 方法进行解密
       return this.webDecrypt(
-        algorithm,
+        data,
         key as CryptoKey,
         iv as Uint8Array,
-        data,
+        algorithm,
       );
     } else {
       throw new Error("Crypto module is not available.");
@@ -588,5 +588,7 @@ export {
   arrayBufferToBase64,
   generateCryptoKey,
   generateIV,
+  BinaryLike,
+  CipherKey,
   GXCrypto as Crypto,
 };
