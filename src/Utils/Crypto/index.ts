@@ -1,19 +1,18 @@
-import { BinaryLike, CipherKey } from "crypto";
+/**
+ * 二进制类似对象。
+ * 可以是 Buffer, NodeJS.TypedArray, DataView 或字符串。
+ */
+type BinaryLike = Buffer | NodeJS.TypedArray | DataView | string;
 
-// interface SignOptions {
-//   key: string | Buffer; // 更新为 string 或 Buffer 类型
-//   padding?: number;
-//   saltLength?: number;
-// }
+/**
+ * 加密密钥。
+ * 可以是 Buffer, NodeJS.TypedArray, DataView 或字符串。
+ */
+type CipherKey = Buffer | NodeJS.TypedArray | DataView | string;
 
-// interface VerifyOptions {
-//   key: string | Buffer; // 公钥，可以是字符串或 Buffer
-//   padding?: number; // 填充方式，对某些算法有效
-//   saltLength?: number; // 盐长度，仅对 RSA-PSS 有效
-// }
-
-// type Algorithm = string; // 根据需要定义更详细的类型
-
+/**
+ * 散列算法枚举。
+ */
 enum HashAlgorithm {
   SHA256 = "SHA-256",
   SHA384 = "SHA-384",
@@ -23,6 +22,10 @@ enum HashAlgorithm {
   SHA3_384 = "SHA3-384",
   SHA3_512 = "SHA3-512",
 }
+
+/**
+ * 对称加密算法枚举。
+ */
 enum SymmetricEncryptionAlgorithm {
   AES_CBC = "AES-CBC",
   AES_GCM = "AES-GCM",
@@ -32,11 +35,11 @@ enum SymmetricEncryptionAlgorithm {
   AES_KW = "AES-KW",
   CHACHA20_POLY1305 = "CHACHA20-POLY1305", // 在某些环境中支持
 }
-// enum AsymmetricEncryptionAlgorithm {
-//   RSA_PSS = "RSA-PSS",
-//   ECDSA = "ECDSA",
-// }
 
+/**
+ * GXCrypto 类提供加密和解密功能。
+ * 支持 Node.js 和 Web 环境。
+ */
 class GXCrypto {
   private isNode: boolean;
   private nodeCrypto: typeof import("crypto") | null;
@@ -590,5 +593,7 @@ export {
   generateIV,
   BinaryLike,
   CipherKey,
+  HashAlgorithm,
+  SymmetricEncryptionAlgorithm,
   GXCrypto as Crypto,
 };
