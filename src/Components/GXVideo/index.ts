@@ -205,9 +205,3 @@ export class GXVideo extends HTMLElement {
     });
   }
 }
-/**
- * 注册自定义元素。
- */
-if (!customElements.get("gx-video")) {
-  customElements.define("gx-video", GXVideo);
-}
