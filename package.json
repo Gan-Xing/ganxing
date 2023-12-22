@@ -2,10 +2,14 @@
   "name": "ganxing",
   "version": "0.0.17",
   "description": "A comprehensive collection of personal programming utilities and components by Gan-Xing.",
-  "main": "dist/index.mjs",
-  "types": "dist/index.d.ts",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.es.js",
+  "unpkg": "dist/index.umd.js",
   "browser": "dist/index.umd.js",
-  "scripts": {
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],  "scripts": {
     "commit": "git-cz",
     "test": "jest --coverage",
     "lint": "eslint 'src/**/*.{ts,tsx}'",
